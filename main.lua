@@ -127,7 +127,7 @@ function love.load()                                                            
             for visY=0, loadedVisImageHeight-1 do                               --for every row...
               for visX=0, 199 do                                                --for each pixel in the row...
                 if nucleotides[colorPosition] == 'A' then
-                  loadedVisData:setPixel(visX, visY, 0, 0.8984375, 1, 1)        --if A, set pixel color to Cyan, note color is from 0.000 to 1.000 which scales as 256 RGB ratio
+                  loadedVisData:setPixel(visX, visY, 0, 0.90, 1, 1)        --if A, set pixel color to Cyan, note color is from 0.000 to 1.000 which scales as 256 RGB ratio
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'T' then
@@ -135,7 +135,7 @@ function love.load()                                                            
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'C' then
-                  loadedVisData:setPixel(visX, visY, 0.859375, 0, 0, 1)         --if C, set pixel color to Red
+                  loadedVisData:setPixel(visX, visY, 0.86, 0, 0, 1)         --if C, set pixel color to Red
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'G' then
