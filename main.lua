@@ -1,5 +1,5 @@
 function love.load()                                                             --all the initial magic happens here. Currently processing the practice DNA file on load. Will add menu system soon.
-  love.window.setMode(1440, 900, {resizable=true, vsync=false, minwidth=400, minheight=300})    --sets window size to fit all the data
+  --love.window.setMode(1440, 900, {resizable=true, vsync=false, minwidth=400, minheight=300})    --sets window size to fit all the data
   loadedLines = {}                                                              --initiate loadedLines table which will store the lines of the DNA file. Note these are lines separated by an /n/r
   initialNucleotides = {}                                                       --initiate nucleotide table for storing the parsed DNA ready for further abstraction
 
