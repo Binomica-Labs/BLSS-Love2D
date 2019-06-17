@@ -127,22 +127,22 @@ function love.load()                                                            
             for visY=0, loadedVisImageHeight-1 do                               --for every row...
               for visX=0, 199 do                                                --for each pixel in the row...
                 if nucleotides[colorPosition] == 'A' then
-                  loadedVisData:setPixel(visX, visY, 0, 0.9, 1.0, 1.0)        --if A, set pixel color to Cyan, note color is from 0.000 to 1.000 which scales as 256 RGB ratio
+                  loadedVisData:setPixel(visX, visY, 0, 255/255, 255/255, 255/255)        --if A, set pixel color to Cyan, note color is from 0.000 to 1.000 which scales as 256 RGB ratio
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'T' then
-                  loadedVisData:setPixel(visX, visY, 1.0, 1.0, 0, 1.0)                --if T, set pixel color to Yelloy
+                  loadedVisData:setPixel(visX, visY, 255/255, 255/255, 0, 255/255)                --if T, set pixel color to Yelloy
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'C' then
-                  loadedVisData:setPixel(visX, visY, 0.9, 0, 0, 1.0)         --if C, set pixel color to Red
+                  loadedVisData:setPixel(visX, visY, 230/255, 0, 0, 255/255)         --if C, set pixel color to Red
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'G' then
-                  loadedVisData:setPixel(visX, visY, 0, 0, 0, 1.0)                --if G, set pixel color to Black
+                  loadedVisData:setPixel(visX, visY, 0, 0, 0, 255/255)                --if G, set pixel color to Black
                   colorPosition = colorPosition + 1
                 else
-                  loadedVisData:setPixel(visX, visY, 1.0, 0, 1.0, 1.0)                --else if any other letter including X set pixel to Magenta
+                  loadedVisData:setPixel(visX, visY, 255/255, 0, 255/255, 255/255)                --else if any other letter including X set pixel to Magenta
                     colorPosition = colorPosition + 1
                   end
                 end
