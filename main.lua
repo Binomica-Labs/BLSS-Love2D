@@ -127,22 +127,22 @@ function love.load()                                                            
             for visY=0, loadedVisImageHeight-1 do                               --for every row...
               for visX=0, 199 do                                                --for each pixel in the row...
                 if nucleotides[colorPosition] == 'A' then
-                  loadedVisData:setPixel(visX, visY, 0, 0.90, 1, 1)        --if A, set pixel color to Cyan, note color is from 0.000 to 1.000 which scales as 256 RGB ratio
+                  loadedVisData:setPixel(visX, visY, 0, 0.90, 1.00, 1.00)        --if A, set pixel color to Cyan, note color is from 0.000 to 1.000 which scales as 256 RGB ratio
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'T' then
-                  loadedVisData:setPixel(visX, visY, 1, 1, 0, 1)                --if T, set pixel color to Yelloy
+                  loadedVisData:setPixel(visX, visY, 1.00, 1.00, 0, 1.00)                --if T, set pixel color to Yelloy
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'C' then
-                  loadedVisData:setPixel(visX, visY, 0.86, 0, 0, 1)         --if C, set pixel color to Red
+                  loadedVisData:setPixel(visX, visY, 0.86, 0, 0, 1.00)         --if C, set pixel color to Red
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'G' then
-                  loadedVisData:setPixel(visX, visY, 0, 0, 0, 1)                --if G, set pixel color to Black
+                  loadedVisData:setPixel(visX, visY, 0, 0, 0, 1.00)                --if G, set pixel color to Black
                   colorPosition = colorPosition + 1
                 else
-                  loadedVisData:setPixel(visX, visY, 1, 0, 1, 1)                --else if any other letter including X set pixel to Magenta
+                  loadedVisData:setPixel(visX, visY, 1.00, 0, 1.00, 1.00)                --else if any other letter including X set pixel to Magenta
                     colorPosition = colorPosition + 1
                   end
                 end
@@ -153,10 +153,10 @@ function love.load()                                                            
 
 
 
-              function create_thread()                                          -- dummy thread function for later use
-                local thread = love.thread.newThread('multi2.lua')              --calls a function stored on a different file, a really clean way to keep the main.lua file tidy
-                thread:start(1, 100000)
-              end
+              --function create_thread()                                          -- dummy thread function for later use
+                --local thread = love.thread.newThread('multi2.lua')              --calls a function stored on a different file, a really clean way to keep the main.lua file tidy
+                --thread:start(1, 100000)
+              --end
 
 
 
