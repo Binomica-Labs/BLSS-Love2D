@@ -3,7 +3,7 @@ function love.load()                                                            
   loadedLines = {}                                                              --initiate loadedLines table which will store the lines of the DNA file. Note these are lines separated by an /n/r
   initialNucleotides = {}                                                       --initiate nucleotide table for storing the parsed DNA ready for further abstraction
 
-  for line in love.filesystem.lines("/SeqData/arabiTest.fna") do                     --read the klebsiella DNA file in the SeqData folder
+  for line in love.filesystem.lines("/SeqData/deino.fna") do                    --read the Deinococcus radiophilus sample DNA file in the SeqData folder
     table.insert(loadedLines, line)                                             --for each line found, put it in the loadedLines table
   end
 
