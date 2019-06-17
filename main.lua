@@ -3,7 +3,7 @@ function love.load()                                                            
   loadedLines = {}                                                              --initiate loadedLines table which will store the lines of the DNA file. Note these are lines separated by an /n/r
   initialNucleotides = {}                                                       --initiate nucleotide table for storing the parsed DNA ready for further abstraction
 
-  for line in love.filesystem.lines("/SeqData/kleb.fna") do                     --read the klebsiella DNA file in the SeqData folder
+  for line in love.filesystem.lines("/SeqData/arabiTest.fna") do                     --read the klebsiella DNA file in the SeqData folder
     table.insert(loadedLines, line)                                             --for each line found, put it in the loadedLines table
   end
 
@@ -34,10 +34,10 @@ function love.load()                                                            
     initialDNA = table.concat(initialNucleotides, "")                           --make one continuous string file of DNA adjusted with X's as padding to fit a string length that is cleanly divisible by the visualization column width, 200bp
     initialVisualization = visualizeDNA(initialNucleotides)                     --generate the first column of DNA visualization, one pixel per nucleotide
     abstractedVisualization20 = visualizeDNA(abstractDNA(20))                   --call the visualizeDNA function using DNA averaged to 20bp segments
-      abstractedVisualization40 = visualizeDNA(abstractDNA(40))                 --abstraction to 40bp
-      abstractedVisualization80 = visualizeDNA(abstractDNA(80))                 --abstraction to 80bp
-      abstractedVisualization100 = visualizeDNA(abstractDNA(100))               --100bp
-      abstractedVisualization200 = visualizeDNA(abstractDNA(200))               --200bp
+    abstractedVisualization40 = visualizeDNA(abstractDNA(40))                   --abstraction to 40bp
+    abstractedVisualization80 = visualizeDNA(abstractDNA(80))                   --abstraction to 80bp
+    abstractedVisualization100 = visualizeDNA(abstractDNA(100))                 --100bp
+    abstractedVisualization200 = visualizeDNA(abstractDNA(200))                 --200bp
       abstractedVisualization400 = visualizeDNA(abstractDNA(400))               --400bp
     end
 
@@ -58,7 +58,7 @@ function love.load()                                                            
 
 
     function love.update(dt)
-      --local data = love.thread.getChannel('data'):pop()                         --a dummy function to use later when pulling values from other threads
+      --local data = love.thread.getChannel('data'):pop()                       --a dummy function to use later when pulling values from other threads
       --  if data then
       --    text = data
       --  end
@@ -116,7 +116,7 @@ function love.load()                                                            
           abastractedDNA = table.concat(choppedDNA, "")                         --once all the abstractions are done, turn it into one long string by concatenating the DNA segments together with no spacer
           abstractedNucleotides = string.toTable(abastractedDNA)                --make that long abstractDNA string into individual nucleotide characters
           return abstractedNucleotides                                          --function ends by returning the character table of nucleotides for feeding into the visualizeDNA function
-          end
+    end
 
 
 
@@ -127,11 +127,11 @@ function love.load()                                                            
             for visY=0, loadedVisImageHeight-1 do                               --for every row...
               for visX=0, 199 do                                                --for each pixel in the row...
                 if nucleotides[colorPosition] == 'A' then
-                  loadedVisData:setPixel(visX, visY, 0, 255/255, 255/255, 255/255)        --if A, set pixel color to Cyan, note color is from 0.000 to 1.000 which scales as 256 RGB ratio
+                  loadedVisData:setPixel(visX, visY, 0, 220/255, 255/255, 255/255)   --if A, set pixel color to Cyan, note color is from 0.000 to 1.000 which scales as 256 RGB ratio
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'T' then
-                  loadedVisData:setPixel(visX, visY, 255/255, 255/255, 0, 255/255)                --if T, set pixel color to Yelloy
+                  loadedVisData:setPixel(visX, visY, 255/255, 255/255, 0, 255/255)   --if T, set pixel color to Yellow
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'C' then
@@ -139,22 +139,22 @@ function love.load()                                                            
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'G' then
-                  loadedVisData:setPixel(visX, visY, 0, 0, 0, 255/255)                --if G, set pixel color to Black
+                  loadedVisData:setPixel(visX, visY, 0, 0, 0, 255/255)               --if G, set pixel color to Black
                   colorPosition = colorPosition + 1
                 else
-                  loadedVisData:setPixel(visX, visY, 255/255, 0, 255/255, 255/255)                --else if any other letter including X set pixel to Magenta
+                  loadedVisData:setPixel(visX, visY, 255/255, 0, 255/255, 255/255)   --else if any other letter including X set pixel to Magenta
                     colorPosition = colorPosition + 1
                   end
                 end
               end
-              local loadedVisImage = love.graphics.newImage(loadedVisData)      --make an image file representing the visualized DNA
-              return loadedVisImage                                             --function ends by returning the image generated in the previous line
-              end
+            local loadedVisImage = love.graphics.newImage(loadedVisData)        --make an image file representing the visualized DNA
+            return loadedVisImage                                               --function ends by returning the image generated in the previous line
+          end
 
 
 
-              --function create_thread()                                          -- dummy thread function for later use
-                --local thread = love.thread.newThread('multi2.lua')              --calls a function stored on a different file, a really clean way to keep the main.lua file tidy
+              --function create_thread()                                        -- dummy thread function for later use
+                --local thread = love.thread.newThread('multi2.lua')            --calls a function stored on a different file, a really clean way to keep the main.lua file tidy
                 --thread:start(1, 100000)
               --end
 
@@ -171,7 +171,7 @@ function love.load()                                                            
 
 
 
-              function string.explode(str, div)                                 --custom function to chop up string delimited by a certain character
+              function string.explode(str, div)                                 --chop up string delimited by a certain character
                 assert(type(str) == "string" and type(div) == "string", "invalid arguments")
                 local o = {}
                 while true do
