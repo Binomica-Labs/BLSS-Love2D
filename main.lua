@@ -18,7 +18,7 @@ function love.load()                                                            
   loadedDNA = loadedDNA:gsub('nil', '')                                         --get rid of null characters, called nil in Lua
 
   --create_thread()
-  text = ''                                                                     --initialize the text string variable tied to the dummy thread function, useless now, leaving for later use
+  --text = ''                                                                     --initialize the text string variable tied to the dummy thread function, useless now, leaving for later use
     --print(loadedDNA)
     loadedDNALength = string.len(loadedDNA)                                     --calculate the length of the entire DNA file after fasta comment removal
     initialNucleotides = string.toTable(loadedDNA)                              --chop the loadedDNA into single characters (nucleotides)
@@ -58,10 +58,10 @@ function love.load()                                                            
 
 
     function love.update(dt)
-      local data = love.thread.getChannel('data'):pop()                         --a dummy function to use later when pulling values from other threads
-        if data then
-          text = data
-        end
+      --local data = love.thread.getChannel('data'):pop()                         --a dummy function to use later when pulling values from other threads
+      --  if data then
+      --    text = data
+      --  end
       end
 
 
@@ -127,22 +127,22 @@ function love.load()                                                            
             for visY=0, loadedVisImageHeight-1 do                               --for every row...
               for visX=0, 199 do                                                --for each pixel in the row...
                 if nucleotides[colorPosition] == 'A' then
-                  loadedVisData:setPixel(visX, visY, 0, 0.90, 1.00, 1.00)        --if A, set pixel color to Cyan, note color is from 0.000 to 1.000 which scales as 256 RGB ratio
+                  loadedVisData:setPixel(visX, visY, 0, 0.9, 1.0, 1.0)        --if A, set pixel color to Cyan, note color is from 0.000 to 1.000 which scales as 256 RGB ratio
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'T' then
-                  loadedVisData:setPixel(visX, visY, 1.00, 1.00, 0, 1.00)                --if T, set pixel color to Yelloy
+                  loadedVisData:setPixel(visX, visY, 1.0, 1.0, 0, 1.0)                --if T, set pixel color to Yelloy
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'C' then
-                  loadedVisData:setPixel(visX, visY, 0.86, 0, 0, 1.00)         --if C, set pixel color to Red
+                  loadedVisData:setPixel(visX, visY, 0.9, 0, 0, 1.0)         --if C, set pixel color to Red
                   colorPosition = colorPosition + 1
 
                 elseif nucleotides[colorPosition] == 'G' then
-                  loadedVisData:setPixel(visX, visY, 0, 0, 0, 1.00)                --if G, set pixel color to Black
+                  loadedVisData:setPixel(visX, visY, 0, 0, 0, 1.0)                --if G, set pixel color to Black
                   colorPosition = colorPosition + 1
                 else
-                  loadedVisData:setPixel(visX, visY, 1.00, 0, 1.00, 1.00)                --else if any other letter including X set pixel to Magenta
+                  loadedVisData:setPixel(visX, visY, 1.0, 0, 1.0, 1.0)                --else if any other letter including X set pixel to Magenta
                     colorPosition = colorPosition + 1
                   end
                 end
