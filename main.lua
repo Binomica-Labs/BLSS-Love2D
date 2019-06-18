@@ -83,7 +83,6 @@ end
       love.event.quit()
     end
 
-
     --local data = love.thread.getChannel('data'):pop()                         --a dummy function to use later when pulling values from other threads
     --  if data then
     --    text = data
