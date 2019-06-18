@@ -41,7 +41,7 @@ function love.load()                                                            
     abstractedVisualization100 = visualizeDNA(abstractDNA(100))                 --100bp
     abstractedVisualization200 = visualizeDNA(abstractDNA(200))                 --200bp
     abstractedVisualization400 = visualizeDNA(abstractDNA(400))                 --400bp
-    canvas = love.graphics.newCanvas(1430, loadedVisImageHeight)
+    canvas = love.graphics.newCanvas(1430, loadedVisImageHeight, { dpiscale = 1 })
     love.graphics.setCanvas(canvas)
         love.graphics.clear()
         love.graphics.draw(initialVisualization, 0, 0)                          --draw the first data vis column (1:1)
