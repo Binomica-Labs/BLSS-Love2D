@@ -1,5 +1,5 @@
 
   function love.conf(t)
-      t.identity = "VizOutput"
+      t.identity = "BLSS-Workspace"
       --t.window.height = 0
   end
