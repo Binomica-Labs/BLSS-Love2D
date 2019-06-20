@@ -1,34 +1,33 @@
 --BLSS Code Start
-local inspect = require 'inspect'
+local inspect = require 'inspect'                                               --include library for easy debugging of table contents usage:  print(inspect(tableName)) output: really nice console read of contents of table regardless of data type
 visCount = 1                                                                    --keeps track of visualization function iteration count. used to link file names from directory to the visualized dna output image.
 
-  function love.load()                                                          --all the initial magic happens here. Currently processing the practice DNA file on load. Will add menu system soon.
+
+
+  function love.load()                                                          --load things and call functions once as soon as app starts
     defineDirectoryTree()
+        --create_thread()
+        --text = ''                                                                 --initialize the text string variable tied to the dummy thread function, useless now, leaving for later use
   end
 
 
 
   function defineDirectoryTree()
-    --love.filesystem.setIdentity("BLSS-Workspace-Main/SeqData")
     directoryPathTable = {}
     directoryNameTable = {}
     rootTable = love.filesystem.getDirectoryItems("SeqData/FoldersToVisualize") --enumerates all folders in the root/save directory of the app
-    --print(inspect(rootTable)) --prints all values of rootTable
     for key, value in ipairs(rootTable) do
       currentItemSelected = "SeqData/FoldersToVisualize/"..value
-      --print(currentItemSelected)
       if love.filesystem.getInfo(currentItemSelected, "directory") then
         table.insert(directoryPathTable, currentItemSelected)                   --save the full path of each directory as a string
         table.insert(directoryNameTable, value)                                 --save just the directory name (hopefully already as a genbank ID value) for later use as filename
       end
     end
-    --print(inspect(directoryTable))
 
     for tableKey, sequenceDirectory in ipairs(directoryPathTable) do
-      fileName = sequenceDirectory.."/"..directoryNameTable[tableKey]..".fna"
+      fileName = sequenceDirectory.."/"..directoryNameTable[tableKey]..".fna"   --define the full file path by stitching the folder path and folder name (since genome fna file name MUST be identical to gneome FOLDER name)
       loadDNA(fileName)
     end
-    --print(inspect(loadedLines))
   end
 
 
@@ -53,32 +52,28 @@ visCount = 1                                                                    
       end
     end
 
-    loadedDNA = table.concat(loadedLines, "")                                     --take all the remaining lines of just DNA and make it one big continuous string called loadedDNA
-    loadedDNA = loadedDNA:gsub('[%p%c%s]', '')                                    --get rid of special characters
-    loadedDNA = loadedDNA:gsub('nil', '')                                         --get rid of null characters, called nil in Lua
-
-    --create_thread()
-    --text = ''                                                                   --initialize the text string variable tied to the dummy thread function, useless now, leaving for later use
-    --print(loadedDNA)
-    loadedDNALength = string.len(loadedDNA)                                       --calculate the length of the entire DNA file after fasta comment removal
-    initialNucleotides = string.toTable(loadedDNA)                                --chop the loadedDNA into single characters (nucleotides)
-    if (loadedDNALength / 200) < 1 then                                           --if the dna file is less than one full row of pixels (200bp), make the visualization image height variable just 1 pixel tall
+    loadedDNA = table.concat(loadedLines, "")                                   --take all the remaining lines of just DNA and make it one big continuous string called loadedDNA
+    loadedDNA = loadedDNA:gsub('[%p%c%s]', '')                                  --get rid of special characters
+    loadedDNA = loadedDNA:gsub('nil', '')                                       --get rid of null characters, called nil in Lua
+    loadedDNALength = string.len(loadedDNA)                                     --calculate the length of the entire DNA file after fasta comment removal
+    initialNucleotides = string.toTable(loadedDNA)                              --chop the loadedDNA into single characters (nucleotides)
+    if (loadedDNALength / 200) < 1 then                                         --if the dna file is less than one full row of pixels (200bp), make the visualization image height variable just 1 pixel tall
       loadedVisImageHeight = 1
     else
       loadedVisImageHeight = (loadedDNALength + (200 - (loadedDNALength % 200)))/ 200   --calculate how tall the visualization image will be rounded to the nearest factor of 200 for even display
-      nucleotideRemainder = 200 - (loadedDNALength % 200)                         --calulate how much is remaining from the last row in the visualization image
+      nucleotideRemainder = 200 - (loadedDNALength % 200)                       --calulate how much is remaining from the last row in the visualization image
       for i=1,nucleotideRemainder do
-        table.insert(initialNucleotides, 'X')                                     --pad the remainder with the character X until the last row is filled to 200 pixels
+        table.insert(initialNucleotides, 'X')                                   --pad the remainder with the character X until the last row is filled to 200 pixels
       end
     end
     initialDNA = table.concat(initialNucleotides, "")                           --make one continuous string file of DNA adjusted with X's as padding to fit a string length that is cleanly divisible by the visualization column width, 200bp
     initialVisualization = visualizeDNA(initialNucleotides)                     --generate the first column of DNA visualization, one pixel per nucleotide
     abstractedVisualization20 = visualizeDNA(abstractDNA(20))                   --call the visualizeDNA function using DNA averaged to 20bp segments
-      abstractedVisualization40 = visualizeDNA(abstractDNA(40))                   --abstraction to 40bp
-      abstractedVisualization80 = visualizeDNA(abstractDNA(80))                   --abstraction to 80bp
-      abstractedVisualization100 = visualizeDNA(abstractDNA(100))                 --100bp
-      abstractedVisualization200 = visualizeDNA(abstractDNA(200))                 --200bp
-      abstractedVisualization400 = visualizeDNA(abstractDNA(400))                 --400bp
+      abstractedVisualization40 = visualizeDNA(abstractDNA(40))                 --abstraction to 40bp
+      abstractedVisualization80 = visualizeDNA(abstractDNA(80))                 --abstraction to 80bp
+      abstractedVisualization100 = visualizeDNA(abstractDNA(100))               --100bp
+      abstractedVisualization200 = visualizeDNA(abstractDNA(200))               --200bp
+      abstractedVisualization400 = visualizeDNA(abstractDNA(400))               --400bp
       canvas = love.graphics.newCanvas(1430, loadedVisImageHeight, { dpiscale = 1 })
       love.graphics.setCanvas(canvas)
       love.graphics.clear()
@@ -92,10 +87,10 @@ visCount = 1                                                                    
       love.graphics.setCanvas()
 
       love.filesystem.setIdentity("BLSS-Workspace/VisOutput")                   --changes the working directory to a subfolder in BLSS-Workspace called VisOutput
-      savedDNAVis = canvas:newImageData()
-      visName = directoryNameTable[visCount]..".png"                            --uses the file name of genomic DNA from dicectoryNameTable value and iterates using visCount integer variable
-      tadaaa = savedDNAVis:encode("png", visName)
-      visCount = visCount + 1
+        savedDNAVis = canvas:newImageData()
+        visName = directoryNameTable[visCount]..".png"                          --uses the file name of genomic DNA from dicectoryNameTable value and iterates using visCount integer variable
+        tadaaa = savedDNAVis:encode("png", visName)
+        visCount = visCount + 1
       love.filesystem.setIdentity("BLSS-Workspace")
     end
 
@@ -110,7 +105,7 @@ visCount = 1                                                                    
       --   tadaaa = savedDNAVis:encode("png", "datavis.png")
       --
       -- else
-      --   --love.graphics.print('data is: ' .. text, 10, 10, 0, 1, 1)                 --an example output pulled from a dummy thread for later use
+      --   --love.graphics.print('data is: ' .. text, 10, 10, 0, 1, 1)          --an example output pulled from a dummy thread for later use
       --   --love.graphics.setColor(1, 1, 1, 1)
       --   --love.graphics.draw(canvas)
       -- end
@@ -164,32 +159,32 @@ visCount = 1                                                                    
           elseif countX > countA and countX > countT and countX > countC and countX > countG then   --if X is the most common, fill with X
             choppedDNA[key] = string.rep("X", string.len(currentFragment))
 
-          else if (countT + countA) > (countG + countC) then                      --if no majority but A+T larger than G+C then fill with A
+          else if (countT + countA) > (countG + countC) then                    --if no majority but A+T larger than G+C then fill with A
             choppedDNA[key] = string.rep("A", string.len(currentFragment))
 
           elseif (countC + countG) > (countA + countT) then
-            choppedDNA[key] = string.rep("G", string.len(currentFragment))        --if no majority but G+C larger than A+T then fill with G
+            choppedDNA[key] = string.rep("G", string.len(currentFragment))      --if no majority but G+C larger than A+T then fill with G
 
             else
-              choppedDNA[key] = string.rep("X", string.len(currentFragment))      --if all are equal, make it magenta because you can't really choose
+              choppedDNA[key] = string.rep("X", string.len(currentFragment))    --if all are equal, make it magenta because you can't really choose
 
             end
           end
         end
 
-        abastractedDNA = table.concat(choppedDNA, "")                             --once all the abstractions are done, turn it into one long string by concatenating the DNA segments together with no spacer
-        abstractedNucleotides = string.toTable(abastractedDNA)                    --make that long abstractDNA string into individual nucleotide characters
-        return abstractedNucleotides                                              --function ends by returning the character table of nucleotides for feeding into the visualizeDNA function
+        abastractedDNA = table.concat(choppedDNA, "")                           --once all the abstractions are done, turn it into one long string by concatenating the DNA segments together with no spacer
+        abstractedNucleotides = string.toTable(abastractedDNA)                  --make that long abstractDNA string into individual nucleotide characters
+        return abstractedNucleotides                                            --function ends by returning the character table of nucleotides for feeding into the visualizeDNA function
         end
 
 
 
-        function visualizeDNA(nucleotides)                                        --this function takes a character table as input and applies a pixel color on a 200 by x height image where each pixel is defined by the nucleotide type and image height is the total DNA file length rounded up to the nearest factor of the image width, 200 pixels
-          local colorPosition = 1                                                 --this keeps track of the actual linear nucleotide count as it runs through the visualization image coords
-          loadedVisData = love.image.newImageData(200, loadedVisImageHeight)      --initialize a new image of the correct size
+        function visualizeDNA(nucleotides)                                      --this function takes a character table as input and applies a pixel color on a 200 by x height image where each pixel is defined by the nucleotide type and image height is the total DNA file length rounded up to the nearest factor of the image width, 200 pixels
+          local colorPosition = 1                                               --this keeps track of the actual linear nucleotide count as it runs through the visualization image coords
+          loadedVisData = love.image.newImageData(200, loadedVisImageHeight)    --initialize a new image of the correct size
 
-          for visY=0, loadedVisImageHeight-1 do                                   --for every row...
-            for visX=0, 199 do                                                    --for each pixel in the row...
+          for visY=0, loadedVisImageHeight-1 do                                 --for every row...
+            for visX=0, 199 do                                                  --for each pixel in the row...
               if nucleotides[colorPosition] == 'A' then
                 loadedVisData:setPixel(visX, visY, 0, 220/255, 255/255, 255/255)  --if A, set pixel color to Cyan, note color is from 0.000 to 1.000 which scales as 256 RGB ratio
                 colorPosition = colorPosition + 1
@@ -199,11 +194,11 @@ visCount = 1                                                                    
                 colorPosition = colorPosition + 1
 
               elseif nucleotides[colorPosition] == 'C' then
-                loadedVisData:setPixel(visX, visY, 230/255, 0, 0, 255/255)        --if C, set pixel color to Red
+                loadedVisData:setPixel(visX, visY, 230/255, 0, 0, 255/255)      --if C, set pixel color to Red
                 colorPosition = colorPosition + 1
 
               elseif nucleotides[colorPosition] == 'G' then
-                loadedVisData:setPixel(visX, visY, 0, 0, 0, 255/255)              --if G, set pixel color to Black
+                loadedVisData:setPixel(visX, visY, 0, 0, 0, 255/255)            --if G, set pixel color to Black
                 colorPosition = colorPosition + 1
               else
                 loadedVisData:setPixel(visX, visY, 255/255, 0, 255/255, 255/255)  --else if any other letter including X set pixel to Magenta
@@ -211,21 +206,21 @@ visCount = 1                                                                    
                 end
               end
             end
-            local loadedVisImage = love.graphics.newImage(loadedVisData)          --make an image file representing the visualized DNA
-            return loadedVisImage                                                 --function ends by returning the image generated in the previous line
+            local loadedVisImage = love.graphics.newImage(loadedVisData)        --make an image file representing the visualized DNA
+            return loadedVisImage                                               --function ends by returning the image generated in the previous line
             end
 
 
 
-            --function create_thread()                                            --dummy thread function for later use
-            --local thread = love.thread.newThread('multi2.lua')                  --calls a function stored on a different file, a really clean way to keep the main.lua file tidy
+            --function create_thread()                                          --dummy thread function for later use
+            --local thread = love.thread.newThread('threaddingExample.lua')                --calls a function stored on a different file, a really clean way to keep the main.lua file tidy
             --thread:start(1, 100000)
             --end
 
 
 
             --function extensions
-            function splitByChunk(textToSplit, chunkSize)                         --custom function to split a string into equal chunks of user defined size
+            function splitByChunk(textToSplit, chunkSize)                       --custom function to split a string into equal chunks of user defined size
               local s = {}
               for i=1, #textToSplit, chunkSize do
                 s[#s+1] = textToSplit:sub(i,i+chunkSize - 1)
@@ -235,7 +230,7 @@ visCount = 1                                                                    
 
 
 
-            function string.explode(str, div)                                     --chop up string delimited by a certain character
+            function string.explode(str, div)                                   --chop up string delimited by a certain character
               assert(type(str) == "string" and type(div) == "string", "invalid arguments")
               local o = {}
               while true do
@@ -251,7 +246,7 @@ visCount = 1                                                                    
 
 
 
-            function string.toTable(string)                                       --turns a string into a character table directly and quickly
+            function string.toTable(string)                                     --turns a string into a character table directly and quickly
               local table = {}
 
               for i = 1, #string do
