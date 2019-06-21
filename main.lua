@@ -1,13 +1,105 @@
 --BLSS Code Start
-local inspect = require 'inspect'                                               --include library for easy debugging of table contents usage:  print(inspect(tableName)) output: really nice console read of contents of table regardless of data type
+inspect = require 'inspect'                                               --include library for easy debugging of table contents usage:  print(inspect(tableName)) output: really nice console read of contents of table regardless of data type
 visCount = 1                                                                    --keeps track of visualization function iteration count. used to link file names from directory to the visualized dna output image.
+  BUTTON_HEIGHT = 64
+  buttons = {}
+  font = love.graphics.newFont(24)
 
 
 
-  function love.load()                                                          --load things and call functions once as soon as app starts
+  function newButton(text, fn)
+    return { text = text, fn = fn, now = false, last = false }
+  end
+
+
+
+  function love.load()
+
+    table.insert(buttons, newButton("Start Game", function()
+      print("Starting game")
+    end))
+
+    table.insert(buttons, newButton("Load Game", function()
+      print("load game")
+    end))
+
+    table.insert(buttons, newButton("Settings", function()
+      print("settings")
+    end))
+
+    table.insert(buttons, newButton("Exit", function()
+      love.event.quit(0)
+    end))
+
+    --load things and call functions once as soon as app starts
     defineDirectoryTree()
-        --create_thread()
-        --text = ''                                                                 --initialize the text string variable tied to the dummy thread function, useless now, leaving for later use
+    limits = love.graphics.getSystemLimits()
+    print(inspect(limits))
+    --create_thread()
+    --text = ''                                                                 --initialize the text string variable tied to the dummy thread function, useless now, leaving for later use
+  end
+
+
+
+  function love.draw()
+
+    ww = love.graphics.getWidth()
+    wh = love.graphics.getHeight()
+    button_width = ww * (1/3)
+    margin = 16
+    total_height = (BUTTON_HEIGHT + margin) * #buttons
+    cursor_y = 0
+
+    for i, button in ipairs(buttons) do
+      bx = (ww * 0.5) - (button_width * 0.5)
+      by = (wh * 0.5) - (total_height * 0.5) + cursor_y
+      buttonColor = {0.4, 0.4, 0.5, 1.0}
+      mx, my = love.mouse.getPosition()
+      hot = mx > bx and mx < bx + button_width and
+      my > by and my < by + BUTTON_HEIGHT
+
+      if hot then
+        buttonColor = {0.8, 0.8, 0.9, 1.0}
+      end
+
+      button.now = love.mouse.isDown(1)
+      if button.now and not button.last and hot then
+        button.fn()
+      end
+      love.graphics.setColor(unpack(buttonColor))
+      love.graphics.rectangle("fill", bx, by, button_width, BUTTON_HEIGHT)
+
+      love.graphics.setColor(1, 1, 1, 1)
+      textW = font:getWidth(button.text)
+      textH = font:getHeight(button.text)
+      love.graphics.print(button.text, (ww * 0.5) - (textW * 0.5), by + textH * 0.5)
+      --love.graphics.print(button.text, font, bx, by, (ww * 0.5) - textW * 0.5, (by + textH) * 0.5)
+      cursor_y = cursor_y + (BUTTON_HEIGHT + margin)
+    end
+    love.graphics.draw(canvas)
+    -- if love.keyboard.isDown("c") then
+    --   love.graphics.clear()
+    --   love.graphics.setColor(1, 1, 1, 1)
+    --   savedDNAVis = canvas:newImageData()
+    --   tadaaa = savedDNAVis:encode("png", "datavis.png")
+    --
+    -- else
+    --   --love.graphics.print('data is: ' .. text, 10, 10, 0, 1, 1)            --an example output pulled from a dummy thread for later use
+    --   --love.graphics.setColor(1, 1, 1, 1)
+    --   --love.graphics.draw(canvas)
+    -- end
+  end
+
+
+
+  function love.update(dt)
+    if love.keyboard.isDown("escape") then
+      love.event.quit()
+    end
+    --local data = love.thread.getChannel('data'):pop()                         --a dummy function to use later when pulling values from other threads
+    --  if data then
+    --    text = data
+    --  end
   end
 
 
@@ -87,41 +179,16 @@ visCount = 1                                                                    
       love.graphics.setCanvas()
 
       love.filesystem.setIdentity("BLSS-Workspace/VisOutput")                   --changes the working directory to a subfolder in BLSS-Workspace called VisOutput
-        savedDNAVis = canvas:newImageData()
-        visName = directoryNameTable[visCount]..".png"                          --uses the file name of genomic DNA from dicectoryNameTable value and iterates using visCount integer variable
-        tadaaa = savedDNAVis:encode("png", visName)
-        visCount = visCount + 1
+      savedDNAVis = canvas:newImageData()
+      visName = directoryNameTable[visCount]..".png"                            --uses the file name of genomic DNA from dicectoryNameTable value and iterates using visCount integer variable
+      tadaaa = savedDNAVis:encode("png", visName)
+      visCount = visCount + 1
       love.filesystem.setIdentity("BLSS-Workspace")
     end
 
 
 
-    function love.draw()
-      love.graphics.draw(canvas)
-      -- if love.keyboard.isDown("c") then
-      --   love.graphics.clear()
-      --   love.graphics.setColor(1, 1, 1, 1)
-      --   savedDNAVis = canvas:newImageData()
-      --   tadaaa = savedDNAVis:encode("png", "datavis.png")
-      --
-      -- else
-      --   --love.graphics.print('data is: ' .. text, 10, 10, 0, 1, 1)          --an example output pulled from a dummy thread for later use
-      --   --love.graphics.setColor(1, 1, 1, 1)
-      --   --love.graphics.draw(canvas)
-      -- end
-    end
 
-
-
-    function love.update(dt)
-      if love.keyboard.isDown("escape") then
-        love.event.quit()
-      end
-      --local data = love.thread.getChannel('data'):pop()                       --a dummy function to use later when pulling values from other threads
-      --  if data then
-      --    text = data
-      --  end
-    end
 
 
 
