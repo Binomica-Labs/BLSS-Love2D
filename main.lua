@@ -1,4 +1,7 @@
---Super special thanks to @tesselode
+--Super special thanks to:
+--@tesselode for the much needed help and pro-level patience
+--many more folks added here soon!
+
 local inspect = require 'lib.inspect'
 local util = require 'util'
 
