@@ -16,7 +16,7 @@ visCount = 1                                                                    
   function love.load()
 
     table.insert(buttons, newButton("Start Game", function()
-      print("Starting game")
+      defineDirectoryTree()
     end))
 
     table.insert(buttons, newButton("Load Game", function()
@@ -32,7 +32,7 @@ visCount = 1                                                                    
     end))
 
     --load things and call functions once as soon as app starts
-    defineDirectoryTree()
+    --
     limits = love.graphics.getSystemLimits()
     print(inspect(limits))
     --create_thread()
@@ -76,18 +76,6 @@ visCount = 1                                                                    
       --love.graphics.print(button.text, font, bx, by, (ww * 0.5) - textW * 0.5, (by + textH) * 0.5)
       cursor_y = cursor_y + (BUTTON_HEIGHT + margin)
     end
-    love.graphics.draw(canvas)
-    -- if love.keyboard.isDown("c") then
-    --   love.graphics.clear()
-    --   love.graphics.setColor(1, 1, 1, 1)
-    --   savedDNAVis = canvas:newImageData()
-    --   tadaaa = savedDNAVis:encode("png", "datavis.png")
-    --
-    -- else
-    --   --love.graphics.print('data is: ' .. text, 10, 10, 0, 1, 1)            --an example output pulled from a dummy thread for later use
-    --   --love.graphics.setColor(1, 1, 1, 1)
-    --   --love.graphics.draw(canvas)
-    -- end
   end
 
 
@@ -185,10 +173,6 @@ visCount = 1                                                                    
       visCount = visCount + 1
       love.filesystem.setIdentity("BLSS-Workspace")
     end
-
-
-
-
 
 
 
