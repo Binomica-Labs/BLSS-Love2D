@@ -1,13 +1,17 @@
+--Super special thanks to @tesselode
 local inspect = require 'lib.inspect'
 local util = require 'util'
 
-local nucleotideColors = {
-	A = {220/255, 255/255, 255/255},
+local nucleotideColors =
+{
+	A = {0/255, 220/255, 255/255},
 	T = {255/255, 255/255, 0},
 	C = {230/255, 0, 0},
 	G = {0, 0, 0},
 	X = {255/255, 0, 255/255}
 }
+
+
 
 local function loadDna(filePath)
 	local lines = {}
@@ -25,6 +29,8 @@ local function loadDna(filePath)
 	end
 	return dnaString
 end
+
+
 
 local function getDominantBase(dnaString)
 	local aCount = util.timesInString(dnaString, 'A')
@@ -50,6 +56,8 @@ local function getDominantBase(dnaString)
 	return 'X'
 end
 
+
+
 local function abstractDna(dnaString, abstractionLevel)
 	local dnaChunks = {}
 	for i = 1, #dnaString, abstractionLevel do
@@ -60,6 +68,8 @@ local function abstractDna(dnaString, abstractionLevel)
 	end
 	return table.concat(dnaChunks)
 end
+
+
 
 local function getDnaImage(dnaString)
 	local imageHeight = math.max(200, util.round(#dnaString / 200))
@@ -73,8 +83,10 @@ local function getDnaImage(dnaString)
 	return love.graphics.newImage(imageData)
 end
 
-local dnaString = loadDna 'test-data/deino.fna'
+local dnaString = loadDna 'test-data/arabiTest.fna'
 local dnaImage = getDnaImage(dnaString)
+
+
 
 function love.draw()
 	love.graphics.print('Memory usage: ' .. math.floor(collectgarbage 'count') .. ' kb')
