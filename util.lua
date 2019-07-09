@@ -6,4 +6,9 @@ function util.round(x, increment)
 	return x >= 0 and math.floor(x + .5) or math.ceil(x - .5)
 end
 
+function util.timesInString(string, substring)
+	local _, count = string:gsub(substring, substring)
+	return count
+end
+
 return util
