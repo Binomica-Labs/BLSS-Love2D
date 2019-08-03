@@ -86,12 +86,13 @@ local function getDnaImage(dnaString)
 	return love.graphics.newImage(imageData)
 end
 
-local dnaString = loadDna 'test-data/arabiTest.fna'
-local dnaImage = getDnaImage(dnaString)
+local dnaString = loadDna('test-data/ctg3.fna')
+local abstractedDnaString =  abstractDna(dnaString, 200)
+local dnaImage = getDnaImage(abstractedDnaString)
 
 
 
 function love.draw()
 	love.graphics.print('Memory usage: ' .. math.floor(collectgarbage 'count') .. ' kb')
-	love.graphics.draw(dnaImage, 300, 0)
+	love.graphics.draw(dnaImage, 0, 20)
 end
