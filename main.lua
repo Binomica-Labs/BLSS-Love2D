@@ -86,7 +86,7 @@ local function getDnaImage(dnaString)
 	return love.graphics.newImage(imageData)
 end
 
-local dnaString = loadDna('test-data/ctg3.fna')
+local dnaString = loadDna('test-data/DraTest.fna')
 local abstractedDnaString =  abstractDna(dnaString, 200)
 local dnaImage = getDnaImage(abstractedDnaString)
 

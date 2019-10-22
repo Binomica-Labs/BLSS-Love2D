@@ -1,5 +1,5 @@
 --BLSS Code Start
-inspect = require 'inspect'                                               --include library for easy debugging of table contents usage:  print(inspect(tableName)) output: really nice console read of contents of table regardless of data type
+inspect = require 'inspect'                                                     --include library for easy debugging of table contents usage:  print(inspect(tableName)) output: really nice console read of contents of table regardless of data type
 visCount = 1                                                                    --keeps track of visualization function iteration count. used to link file names from directory to the visualized dna output image.
   BUTTON_HEIGHT = 64
   buttons = {}
@@ -264,7 +264,7 @@ visCount = 1                                                                    
 
 
             --function create_thread()                                          --dummy thread function for later use
-            --local thread = love.thread.newThread('threaddingExample.lua')                --calls a function stored on a different file, a really clean way to keep the main.lua file tidy
+            --local thread = love.thread.newThread('threaddingExample.lua')     --calls a function stored on a different file, a really clean way to keep the main.lua file tidy
             --thread:start(1, 100000)
             --end
 
